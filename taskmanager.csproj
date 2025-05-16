@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\taskmanager_icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\performance_icon.png" />
+    <None Remove="Resources\processes_icon.png" />
+    <None Remove="Resources\search_icon.png" />
+    <None Remove="Resources\settings_icon.png" />
+    <None Remove="Resources\taskmanager_icon.ico" />
+    <None Remove="Resources\taskmanager_icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiveCharts.Core" Version="0.9.8" />
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="System.Management" Version="9.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\performance_icon.png" />
+    <Resource Include="Resources\processes_icon.png" />
+    <Resource Include="Resources\search_icon.png" />
+    <Resource Include="Resources\settings_icon.png" />
+    <Resource Include="Resources\taskmanager_icon.ico" />
+    <Resource Include="Resources\taskmanager_icon.png" />
+  </ItemGroup>
+
+</Project>

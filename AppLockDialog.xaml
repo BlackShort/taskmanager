@@ -1,0 +1,106 @@
+<Window x:Class="taskmanager.AppLockDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="App Lock Authentication" 
+        Height="500" Width="500"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F5F5F5">
+
+    <Window.Resources>
+        <Style TargetType="TextBlock" x:Key="HeaderStyle">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,10" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="15,8" />
+            <Setter Property="MinWidth" Value="100" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+        <Style TargetType="TabItem">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="HeaderTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" FontWeight="SemiBold" />
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Border Padding="20" Background="White" Margin="10" CornerRadius="8" BorderBrush="#DDDDDD" BorderThickness="1">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,15">
+                <TextBlock Text="Task Manager" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock Text="This application is password protected" 
+                         FontSize="14" HorizontalAlignment="Center" Foreground="#666666"/>
+                <Separator Margin="0,10" Opacity="0.5"/>
+            </StackPanel>
+
+            <!-- Main Content -->
+            <TabControl Grid.Row="1" x:Name="MainTabControl" Margin="0,5" BorderThickness="0">
+                <!-- Login Tab -->
+                <TabItem Header="Login">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Please enter your password" Margin="0,10" FontWeight="SemiBold"/>
+
+                        <PasswordBox Grid.Row="1" x:Name="PasswordBox" Height="35" 
+                                   Margin="0,5,0,15" Padding="10,5" FontSize="14"/>
+
+                        <Button Grid.Row="2" x:Name="LoginButton" Content="Login" 
+                              Click="LoginButton_Click" HorizontalAlignment="Center"
+                              Background="#2196F3" Foreground="White" FontWeight="SemiBold"/>
+                    </Grid>
+                </TabItem>
+
+                <!-- Recover Password Tab -->
+                <TabItem Header="Forgot Password">
+                    <Grid Margin="10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Security Question:" FontWeight="SemiBold" Margin="0,10,0,5"/>
+                        <TextBlock Grid.Row="1" x:Name="SecurityQuestionValue" Text="Loading..." 
+                                 TextWrapping="Wrap" Margin="0,0,0,15"/>
+
+                        <TextBlock Grid.Row="2" Text="Answer:" FontWeight="SemiBold" Margin="0,5,0,5"/>
+                        <TextBox Grid.Row="3" x:Name="SecurityAnswerBox" Height="35" Margin="0,0,0,15" 
+                               Padding="10,5" FontSize="14"/>
+
+                        <Button Grid.Row="4" x:Name="RecoverButton" Content="Reset Password" 
+                              Click="RecoverButton_Click" HorizontalAlignment="Center" 
+                              Background="#FF9800" Foreground="White" FontWeight="SemiBold"/>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+
+            <!-- Footer Actions -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button x:Name="ExitButton" Content="Exit Application" 
+                      Click="ExitButton_Click" Background="#E91E63" Foreground="White"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

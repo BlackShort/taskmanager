@@ -1,0 +1,15 @@
+﻿<Application x:Class="taskmanager.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:taskmanager"
+             xmlns:views="clr-namespace:taskmanager.Views"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <!-- Add view resources here if needed -->
+        <DrawingImage x:Key="AppIcon">
+            <DrawingImage.Drawing>
+                <ImageDrawing ImageSource="/Resources/taskmanager_icon.png" Rect="0,0,16,16" />
+            </DrawingImage.Drawing>
+        </DrawingImage>
+    </Application.Resources>
+</Application>

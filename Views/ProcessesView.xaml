@@ -1,0 +1,215 @@
+<UserControl x:Class="taskmanager.Views.ProcessesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:taskmanager.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<!-- Control Panel -->
+		<Grid Grid.Row="0" Margin="10">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="Auto"/>
+			</Grid.ColumnDefinitions>
+
+			
+			<StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">				
+				<Border CornerRadius="4" Margin="0,0,10,0" Background="#FFFFFFFF" BorderBrush="#FF505050" BorderThickness="1">
+					<TextBox x:Name="SearchBox" Width="250"
+                         TextChanged="SearchBox_TextChanged">
+						<TextBox.Style>
+							<Style TargetType="TextBox">
+								<Setter Property="Padding" Value="5"/>
+								<Setter Property="Background" Value="#F5F5F5"/>
+								<Setter Property="BorderThickness" Value="1"/>
+							</Style>
+						</TextBox.Style>
+					</TextBox>
+				</Border>
+			</StackPanel>
+
+			<StackPanel Grid.Column="1" Orientation="Horizontal">
+				<CheckBox x:Name="AutoUpdateCheckBox"
+				  Content="Auto"
+				  IsChecked="False"
+				  Margin="5,0"
+				  VerticalAlignment="Center" />
+				
+				<Button x:Name="RefreshButton" Content="Refresh"
+                        Click="RefreshButton_Click" ToolTip="Refresh process list"
+                        Margin="5,0" Padding="10,5">
+					<Button.Style>
+						<Style TargetType="Button">
+							<Setter Property="Background" Value="#007ACC"/>
+							<Setter Property="Foreground" Value="White"/>
+							<Setter Property="BorderBrush" Value="#0062A3"/>
+							<Setter Property="BorderThickness" Value="1"/>
+							<Style.Triggers>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="Background" Value="#0062A3"/>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</Button.Style>
+				</Button>
+				<Button x:Name="EndTaskButton" Content="End Task"
+                        IsEnabled="False" Click="EndTaskButton_Click" ToolTip="Terminate selected process"
+                        Margin="5,0" Padding="10,5">
+					<Button.Style>
+						<Style TargetType="Button">
+							<Setter Property="Background" Value="#E81123"/>
+							<Setter Property="Foreground" Value="White"/>
+							<Setter Property="BorderBrush" Value="#D10F1F"/>
+							<Setter Property="BorderThickness" Value="1"/>
+							<Style.Triggers>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="Background" Value="#D10F1F"/>
+								</Trigger>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Background" Value="#CCCCCC"/>
+									<Setter Property="BorderBrush" Value="#AAAAAA"/>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</Button.Style>
+				</Button>
+				<Button x:Name="PropertiesButton" Content="Properties"
+                        IsEnabled="False" Click="PropertiesButton_Click" ToolTip="View process properties"
+                        Margin="5,0" Padding="10,5">
+					<Button.Style>
+						<Style TargetType="Button">
+							<Setter Property="Background" Value="#007ACC"/>
+							<Setter Property="Foreground" Value="White"/>
+							<Setter Property="BorderBrush" Value="#0062A3"/>
+							<Setter Property="BorderThickness" Value="1"/>
+							<Style.Triggers>
+								<Trigger Property="IsMouseOver" Value="True">
+									<Setter Property="Background" Value="#0062A3"/>
+								</Trigger>
+								<Trigger Property="IsEnabled" Value="False">
+									<Setter Property="Background" Value="#CCCCCC"/>
+									<Setter Property="BorderBrush" Value="#AAAAAA"/>
+								</Trigger>
+							</Style.Triggers>
+						</Style>
+					</Button.Style>
+				</Button>
+			</StackPanel>
+		</Grid>
+
+		<!-- Process List -->
+		<DataGrid x:Name="ProcessesDataGrid" Grid.Row="1"  AutoGenerateColumns="False"
+                  IsReadOnly="True" SelectionChanged="ProcessesDataGrid_SelectionChanged"
+                  SelectionMode="Single" CanUserSortColumns="True" AlternatingRowBackground="#F0F0F0">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" SortDirection="Ascending"/>
+				<DataGridTextColumn Header="PID" Binding="{Binding PID}" Width="80"/>
+				<DataGridTemplateColumn Header="CPU" Width="80" SortMemberPath="CPUValue">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<TextBlock Text="{Binding CPU}" ToolTip="{Binding CPUToolTip}"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTemplateColumn Header="Memory" Width="100" SortMemberPath="MemoryValue">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Grid>
+								<Grid.RowDefinitions>
+									<RowDefinition Height="Auto"/>
+									<RowDefinition Height="Auto"/>
+								</Grid.RowDefinitions>
+								<TextBlock Text="{Binding Memory}" Grid.Row="0"/>
+								<ProgressBar Grid.Row="1" Value="{Binding MemoryPercentage}" Margin="0,2,0,0"
+                                            Maximum="100" ToolTip="{Binding MemoryToolTip}" Height="4"/>
+							</Grid>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTextColumn Header="Disk" Binding="{Binding DiskUsage}" Width="80"/>
+				<DataGridTextColumn Header="Network" Binding="{Binding NetworkUsage}" Width="80"/>
+				<DataGridTextColumn Header="Type" Binding="{Binding ProcessType}" Width="100"/>
+				<DataGridTextColumn Header="Priority" Binding="{Binding Priority}" Width="SizeToCells" />
+				<DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+			</DataGrid.Columns>
+			<DataGrid.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="End Task" Click="EndTaskButton_Click"/>
+					<MenuItem Header="End Process Tree" Click="EndProcessTreeButton_Click"/>
+					<MenuItem Header="Open File Location" Click="OpenFileLocationButton_Click"/>
+					<MenuItem Header="Properties" Click="PropertiesButton_Click"/>
+					<Separator/>
+					<MenuItem Header="Set Priority">
+						<MenuItem Header="Realtime" Click="SetPriorityRealtime_Click"/>
+						<MenuItem Header="High" Click="SetPriorityHigh_Click"/>
+						<MenuItem Header="Above Normal" Click="SetPriorityAboveNormal_Click"/>
+						<MenuItem Header="Normal" Click="SetPriorityNormal_Click"/>
+						<MenuItem Header="Below Normal" Click="SetPriorityBelowNormal_Click"/>
+						<MenuItem Header="Low" Click="SetPriorityIdle_Click"/>
+					</MenuItem>
+				</ContextMenu>
+			</DataGrid.ContextMenu>
+
+		</DataGrid>
+
+		<!-- Loading Overlay -->
+		<Grid x:Name="LoadingOverlay" Grid.Row="0" Grid.RowSpan="2" Background="#80000000" Visibility="Collapsed">
+			<StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+				<TextBlock Text="Loading Processes..." Foreground="White" FontSize="16" FontWeight="Bold" Margin="0,0,0,10"/>
+				<ProgressBar IsIndeterminate="True" Width="200" Height="20"/>
+			</StackPanel>
+		</Grid>
+
+		<!-- Status Panel -->
+		<!--
+		<Border Grid.Row="1" VerticalAlignment="Bottom" Background="#F0F0F0" BorderBrush="#CCCCCC" BorderThickness="0,1,0,0">
+			<Grid Margin="10,5">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+				<TextBlock x:Name="StatusBar" Grid.Column="0" Text="Ready" VerticalAlignment="Center"/>
+				<TextBlock x:Name="ProcessCountText" Grid.Column="1" Text="Processes: 0" VerticalAlignment="Center"/>
+			</Grid>
+		</Border>
+		-->
+
+		<Border Grid.Row="1" VerticalAlignment="Bottom" Background="#F0F0F0" BorderBrush="#CCCCCC" BorderThickness="0,1,0,0">
+			<Grid Margin="10,5">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+				<StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+					<Ellipse x:Name="ReadyDot"
+							 Width="10" Height="10"
+							 Fill="Green"
+							 Margin="0,0,8,0"
+							 VerticalAlignment="Center"
+							 Visibility="Collapsed">
+						<Ellipse.Triggers>
+							<EventTrigger RoutedEvent="Ellipse.Loaded">
+								<BeginStoryboard>
+									<Storyboard RepeatBehavior="Forever" AutoReverse="True">
+										<DoubleAnimation Storyboard.TargetProperty="Opacity"
+														 From="1" To="0.7" Duration="0:0:0.5"/>
+									</Storyboard>
+								</BeginStoryboard>
+							</EventTrigger>
+						</Ellipse.Triggers>
+					</Ellipse>
+					<TextBlock x:Name="StatusBar" Text="Ready" VerticalAlignment="Center"/>
+				</StackPanel>
+				<TextBlock x:Name="ProcessCountText" Grid.Column="1" Text="Processes: 0" VerticalAlignment="Center"/>
+			</Grid>
+		</Border>
+
+	</Grid>
+</UserControl>
